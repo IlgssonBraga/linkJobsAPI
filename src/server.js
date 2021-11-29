@@ -1,7 +1,15 @@
 const express = require("express");
+const { routes } = require("./routes/index.routes");
+const cors = require("cors");
+require("./database");
 
 const app = express();
 
-app.get("/", (req, res) => res.send("Hello, world"));
+app.use(express.json());
+app.use(cors("http://localhost:8080"));
 
-app.listen(3333);
+const PORT = 3333;
+
+app.use(routes);
+
+app.listen(process.env.PORT || PORT);
