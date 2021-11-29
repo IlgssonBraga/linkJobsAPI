@@ -17,10 +17,8 @@ class EmployeeController {
   }
 
   async store(req, res) {
-    console.log("BODY", req.body);
     const { email } = req.body;
     const verificaEmail = await Employee.findOne({ where: { email } });
-    console.log("verificaEmail", verificaEmail);
     if (verificaEmail) {
       return res.status(400).json({ error: "E-mail already exists." });
     }
