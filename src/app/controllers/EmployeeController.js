@@ -11,7 +11,7 @@ class EmployeeController {
     const id = req.params.id;
     const employee = await Employee.findByPk(id);
     if (!employee) {
-      return res.status(404).json({ message: "Employee not find" });
+      return res.status(404).json({ message: "Employee not found" });
     }
     return res.json(employee);
   }
@@ -53,7 +53,7 @@ class EmployeeController {
     const id = req.params.id;
     const employee = await Employee.findByPk(id);
     if (!employee) {
-      return res.status(404).json({ message: "Employee not find" });
+      return res.status(404).json({ message: "Employee not found" });
     }
 
     employee.destroy();

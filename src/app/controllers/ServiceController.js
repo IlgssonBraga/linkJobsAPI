@@ -12,7 +12,7 @@ class ServiceController {
     const id = req.params.id;
     const service = await Service.findByPk(id);
     if (!service) {
-      return res.status(404).json({ message: "Service not find" });
+      return res.status(404).json({ message: "Service not found" });
     }
     return res.json(service);
   }
