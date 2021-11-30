@@ -17,6 +17,10 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: false,
       },
+      value: {
+        type: Sequelize.DOUBLE,
+        allowNull: false,
+      },
       provider_id: {
         type: Sequelize.INTEGER,
         allowNull: false,

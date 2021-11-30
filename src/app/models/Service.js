@@ -8,6 +8,7 @@ class Service extends Model {
         name: Sequelize.STRING,
         area: Sequelize.STRING,
         provider_id: Sequelize.INTEGER,
+        value: Sequelize.DOUBLE,
       },
       { sequelize }
     );
