@@ -3,8 +3,9 @@ const configDB = require("../config/database");
 const Employee = require("../app/models/Employee");
 const User = require("../app/models/User");
 const Service = require("../app/models/Service");
+const Contract = require("../app/models/Contract");
 
-const models = [Employee, User, Service];
+const models = [Employee, User, Service, Contract];
 
 class Database {
   constructor() {
