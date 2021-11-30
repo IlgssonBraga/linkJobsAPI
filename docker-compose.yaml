@@ -12,7 +12,7 @@ services:
         ports:
             - 5432:5432
         volumes:
-            - .docker/postgres/db:/var/lib/postgresql/data:z
+            - .docker/postgres/db:/var/lib/postgresql/data
         environment:
             - POSTGRES_DB=linkjobs
             - POSTGRES_USER=postgres
@@ -31,7 +31,7 @@ services:
             - DB_USER=postgres
             - DB_PASS=linkjobs
         volumes:
-            - .:/usr/app:z
+            - .:/usr/app
             - /usr/app/node_modules
         ports:
             - 3333:3333
