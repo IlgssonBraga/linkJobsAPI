@@ -1,18 +1,16 @@
 const { Router } = require("express");
 const EmployeeController = require("../app/controllers/EmployeeController");
 const UserController = require("../app/controllers/UserController");
-// const MaterialController = require("../app/controllers/MaterialController");
-// const OrderController = require("../app/controllers/OrderController");
 const SessionController = require("../app/controllers/SessionController");
+const ServiceController = require("../app/controllers/ServiceController");
 const authMiddleware = require("../app/middlewares/auth");
 const routes = Router();
 
 const employeeController = new EmployeeController();
 const sessionController = new SessionController();
 const userController = new UserController();
-// const materialController = new MaterialController();
-// const orderController = new OrderController();
-// routes.get("/", (req,res) => res.send('Main page'))
+const serviceController = new ServiceController();
+
 routes.post("/employees", employeeController.store);
 routes.post("/login", sessionController.store);
 routes.use(authMiddleware);
@@ -27,17 +25,13 @@ routes.get("/users/:id", userController.show);
 routes.put("/users/:id", userController.update);
 routes.delete("/users/:id", userController.delete);
 
-// routes.post("/materials", materialController.store);
-// routes.get("/materials", materialController.index);
-// routes.get("/materials/:id", materialController.show);
-// routes.put("/materials/:id", materialController.update);
-// routes.delete("/materials/:id", materialController.delete);
+routes.post("/services", serviceController.store);
+routes.get("/services", serviceController.index);
+routes.get("/services/:id", serviceController.show);
+routes.put("/services/:id", serviceController.update);
+routes.delete("/services/:id", serviceController.delete);
 
-// routes.post("/orders", orderController.store);
-// routes.get("/orders", orderController.index);
-// routes.get("/orders/:id", orderController.show);
-// routes.put("/orders/:id", orderController.update);
-// routes.delete("/orders/:id", orderController.delete);
+
 
 module.exports = {
   routes,
