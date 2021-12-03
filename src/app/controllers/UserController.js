@@ -2,7 +2,11 @@ const User = require("../models/User");
 
 class UserController {
   async index(req, res) {
-    const user = await User.findAll();
+    const user = await User.findAll({
+      attributes: {
+        exclude: ["password_hash"],
+      },
+    });
 
     return res.json(user);
   }
@@ -30,8 +34,12 @@ class UserController {
       }
     }
 
-    const user = await User.create(req.body);
-    return res.json(user);
+    await User.create(req.body);
+
+    const newUser = await User.findOne({ where: { email }, attributes: {
+      exclude: ["password_hash"],
+    }});
+    return res.json(newUser);
   }
 
   async update(req, res) {
@@ -54,7 +62,9 @@ class UserController {
 
     await user.update(req.body);
 
-    const userUpdated = await User.findByPk(req.params.id);
+    const userUpdated = await User.findOne({ where: { id: req.params.id }, attributes: {
+      exclude: ["password_hash"],
+    }});
 
     return res.json(userUpdated);
   }

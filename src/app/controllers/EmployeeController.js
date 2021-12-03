@@ -2,14 +2,26 @@ const Employee = require("../models/Employee");
 
 class EmployeeController {
   async index(req, res) {
-    const employee = await Employee.findAll();
+    const employee = await Employee.findAll({
+      attributes: {
+        exclude: ["password_hash"],
+      },
+    });
 
     return res.json(employee);
   }
 
   async show(req, res) {
     const id = req.params.id;
-    const employee = await Employee.findByPk(id);
+    // const employee = await Employee.findOne(id, {
+    //   attributes: {
+    //     exclude: ["password_hash"],
+    //   },
+    // });
+
+    const employee = await Employee.findOne({ where: { id:  req.params.id}, attributes: {
+      exclude: ["password_hash"],
+    } });
     if (!employee) {
       return res.status(404).json({ message: "Employee not found" });
     }
@@ -22,13 +34,12 @@ class EmployeeController {
     if (verificaEmail) {
       return res.status(400).json({ error: "E-mail already exists." });
     }
-    const employee = await Employee.create(req.body);
-    return res.json({
-      id: employee.id,
-      name: employee.name,
-      email: employee.email,
-      createdAt: employee.createdAt,
-    });
+    await Employee.create(req.body);
+
+    const newEmployee = await Employee.findOne({ where: { email }, attributes: {
+      exclude: ["password_hash"],
+    }});
+    return res.json(newEmployee);
   }
 
   async update(req, res) {
@@ -44,7 +55,9 @@ class EmployeeController {
 
     await employee.update(req.body);
 
-    const employeeUpdated = await Employee.findByPk(req.params.id);
+    const employeeUpdated = await Employee.findOne({ where: { id: req.params.id }, attributes: {
+      exclude: ["password_hash"],
+    }});
 
     return res.json(employeeUpdated);
   }
