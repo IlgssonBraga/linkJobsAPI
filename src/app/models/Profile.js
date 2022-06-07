@@ -9,6 +9,7 @@ class Profile extends Model {
         following: Sequelize.INTEGER,
         followers: Sequelize.INTEGER,
         avg_rate: Sequelize.DOUBLE,
+        qt_rates: Sequelize.INTEGER,
       },
       { sequelize }
     );

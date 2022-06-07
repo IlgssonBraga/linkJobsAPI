@@ -31,6 +31,10 @@ module.exports = {
         allowNull: true,
         default: 0,
       },
+      qt_rates: {
+        type: Sequelize.INTEGER,
+        allowNull: true,
+      },
       created_at: {
         type: Sequelize.DATE,
         allowNull: false,

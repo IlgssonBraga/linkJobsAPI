@@ -1,17 +1,16 @@
-const Follow = require("../models/Follow");
+const Avaliation = require("../models/Avaliation");
 const Profile = require("../models/Profile");
-// const User = require("../models/User");
 
-class FollowController {
+class AvaliationController {
   async show(req, res) {
     const id = req.params.id;
-    const followList = await Follow.findAll({
-      where: { following: id },
+    const avaList = await Avaliation.findAll({
+      where: { rated: id },
     });
-    if (!followList) {
+    if (!avaList) {
       return res.status(404).json({ message: "Not found" });
     }
-    return res.json(followList);
+    return res.json(avaList);
   }
 
   async store(req, res) {
@@ -31,30 +30,29 @@ class FollowController {
       return res.status(400).json({ message: "Bad request" });
     }
 
-    const findFollow = await Follow.findOne({
-      where: { followed_by: followedByProfile.id, following: id },
+    const findAva = await Avaliation.findOne({
+      where: { rated_by: followedByProfile.id, rated: id },
     });
-    if (findFollow) {
+    if (findAva) {
       return res
         .status(404)
-        .json({ message: "You already follow this profile" });
+        .json({ message: "You already avaliate this profile" });
     }
-    await Follow.create({
-      followed_by: followedByProfile.id,
-      following: id,
-    });
-
-    await followedByProfile.update({
-      following: followedByProfile.following + 1,
+    await Avaliation.create({
+      rated_by: followedByProfile.id,
+      rated: id,
+      rate: req.body.rate,
     });
 
     await profile.update({
-      followers: profile.followers + 1,
+      qt_rates: profile.qt_rates + 1,
+      avg_rate:
+        (profile.avg_rate * profile.qt_rates + req.body.rate) /
+        (profile.qt_rates + 1),
     });
-    const followedByProfilenew = await Profile.findOne({
-      where: { owner_id: req.userId },
-    });
-    return res.json(followedByProfilenew);
+
+    const profileNew = await Profile.findByPk(id);
+    return res.json(profileNew);
   }
 
   async delete(req, res) {
@@ -93,4 +91,4 @@ class FollowController {
   }
 }
 
-module.exports = FollowController;
+module.exports = AvaliationController;

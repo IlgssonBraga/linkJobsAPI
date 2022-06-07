@@ -3,8 +3,9 @@ const configDB = require("../config/database");
 const Profile = require("../app/models/Profile");
 const User = require("../app/models/User");
 const Follow = require("../app/models/Follow");
+const Avaliation = require("../app/models/Avaliation");
 
-const models = [Profile, User, Follow];
+const models = [Profile, User, Follow, Avaliation];
 
 class Database {
   constructor() {
