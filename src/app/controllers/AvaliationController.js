@@ -61,8 +61,17 @@ class AvaliationController {
     if (!profile) {
       return res.status(404).json({ message: "Profile not found" });
     }
+
+    const followedByProfile = await Profile.findOne({
+      where: { owner_id: req.userId },
+    });
+
+    if (!followedByProfile) {
+      return res.status(404).json({ message: "Profile not found" });
+    }
+
     const findAva = await Avaliation.findOne({
-      where: { rated_by: req.userId, rated: id },
+      where: { rated_by: followedByProfile.id, rated: id },
     });
     if (!findAva) {
       return res
@@ -88,8 +97,17 @@ class AvaliationController {
     if (!profile) {
       return res.status(404).json({ message: "Profile not found" });
     }
+
+    const followedByProfile = await Profile.findOne({
+      where: { owner_id: req.userId },
+    });
+
+    if (!followedByProfile) {
+      return res.status(404).json({ message: "Profile not found" });
+    }
+
     const findAva = await Avaliation.findOne({
-      where: { rated_by: req.userId, rated: id },
+      where: { rated_by: followedByProfile.id, rated: id },
     });
     if (!findAva) {
       return res
@@ -107,19 +125,6 @@ class AvaliationController {
     await findAva.update({
       rate: req.body.rate,
     });
-
-    // findAva = await Avaliation.findOne({
-    //   where: { rated_by: req.userId, rated: id },
-    // });
-
-    // console.log("findAva.rate", findAva.rate);
-
-    // await profile.update({
-    //   qt_rates: profile.qt_rates - 1,
-    //   avg_rate:
-    //     (profile.avg_rate * profile.qt_rates - findAva.rate) /
-    //     (profile.qt_rates - 1 == 0 ? 1 : profile.qt_rates - 1),
-    // });
 
     profile = await Profile.findByPk(id);
 
