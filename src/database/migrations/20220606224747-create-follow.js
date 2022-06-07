@@ -2,24 +2,25 @@
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    return queryInterface.createTable("employees", {
+    return queryInterface.createTable("follows", {
       id: {
         type: Sequelize.INTEGER,
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
       },
-      name: {
-        type: Sequelize.STRING,
+      followed_by: {
+        type: Sequelize.INTEGER,
+        references: { model: "profiles", key: "id" },
+        onUpdate: "CASCADE",
+        onDelete: "SET NULL",
         allowNull: false,
       },
-      email: {
-        type: Sequelize.STRING,
-        allowNull: false,
-        unique: true,
-      },
-      password_hash: {
-        type: Sequelize.STRING,
+      following: {
+        type: Sequelize.INTEGER,
+        references: { model: "profiles", key: "id" },
+        onUpdate: "CASCADE",
+        onDelete: "SET NULL",
         allowNull: false,
       },
       created_at: {
@@ -34,6 +35,6 @@ module.exports = {
   },
 
   down: async (queryInterface, Sequelize) => {
-    return queryInterface.dropTable("employees");
+    return queryInterface.dropTable("follows");
   },
 };

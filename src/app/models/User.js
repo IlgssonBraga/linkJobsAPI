@@ -1,6 +1,7 @@
 const Sequelize = require("sequelize");
 const { Model } = require("sequelize");
 const bcrypt = require("bcryptjs");
+const { idle_in_transaction_session_timeout } = require("pg/lib/defaults");
 
 class User extends Model {
   static init(sequelize) {
@@ -28,6 +29,14 @@ class User extends Model {
 
   checkPassword(password) {
     return bcrypt.compare(password, this.password_hash);
+  }
+
+  static associate(models) {
+    this.hasOne(models.Profile, {
+      sourceKey: "id",
+      foreignKey: "owner_id",
+      as: "owner",
+    });
   }
 }
 

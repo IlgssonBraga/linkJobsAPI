@@ -2,30 +2,30 @@
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    return queryInterface.createTable("contracts", {
+    return queryInterface.createTable("avaliations", {
       id: {
         type: Sequelize.INTEGER,
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
       },
-      value: {
-        type: Sequelize.DOUBLE,
+      rated_by: {
+        type: Sequelize.INTEGER,
+        references: { model: "profiles", key: "id" },
+        onUpdate: "CASCADE",
+        onDelete: "SET NULL",
         allowNull: false,
       },
-      provider_id: {
+      rated: {
         type: Sequelize.INTEGER,
+        references: { model: "profiles", key: "id" },
+        onUpdate: "CASCADE",
+        onDelete: "SET NULL",
         allowNull: false,
-        references: { model: "users", key: "id" },
-        onDelete: "no action",
-        onUpdate: "no action",
       },
-      customer_id: {
+      rate: {
         type: Sequelize.INTEGER,
         allowNull: false,
-        references: { model: "users", key: "id" },
-        onDelete: "no action",
-        onUpdate: "no action",
       },
       created_at: {
         type: Sequelize.DATE,
@@ -39,6 +39,6 @@ module.exports = {
   },
 
   down: async (queryInterface, Sequelize) => {
-    return queryInterface.dropTable("contracts");
+    return queryInterface.dropTable("avaliations");
   },
 };

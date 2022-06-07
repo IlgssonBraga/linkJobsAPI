@@ -2,31 +2,34 @@
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    return queryInterface.createTable("services", {
+    return queryInterface.createTable("profiles", {
       id: {
         type: Sequelize.INTEGER,
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
       },
-      name: {
-        type: Sequelize.STRING,
-        allowNull: false,
-      },
-      area: {
-        type: Sequelize.STRING,
-        allowNull: false,
-      },
-      value: {
-        type: Sequelize.DOUBLE,
-        allowNull: false,
-      },
-      provider_id: {
+      owner_id: {
         type: Sequelize.INTEGER,
-        allowNull: false,
         references: { model: "users", key: "id" },
-        onDelete: "no action",
-        onUpdate: "no action",
+        onUpdate: "CASCADE",
+        onDelete: "SET NULL",
+        allowNull: false,
+      },
+      following: {
+        type: Sequelize.INTEGER,
+        allowNull: true,
+        default: 0,
+      },
+      followers: {
+        type: Sequelize.INTEGER,
+        allowNull: true,
+        default: 0,
+      },
+      avg_rate: {
+        type: Sequelize.DOUBLE,
+        allowNull: true,
+        default: 0,
       },
       created_at: {
         type: Sequelize.DATE,
@@ -40,6 +43,6 @@ module.exports = {
   },
 
   down: async (queryInterface, Sequelize) => {
-    return queryInterface.dropTable("services");
+    return queryInterface.dropTable("profiles");
   },
 };

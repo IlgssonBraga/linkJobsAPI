@@ -1,23 +1,23 @@
 const jwt = require("jsonwebtoken");
-const Employee = require("../models/Employee");
+const User = require("../models/User");
 const authConfig = require("../../config/auth");
 
 class SessionControler {
   async store(req, res) {
     const { email, password } = req.body;
-    const employee = await Employee.findOne({
+    const user = await User.findOne({
       where: { email },
     });
-    if (!employee) {
-      return res.status(401).json({ error: "Employee not found." });
+    if (!user) {
+      return res.status(401).json({ error: "User not found." });
     }
 
-    if (!(await employee.checkPassword(password))) {
+    if (!(await user.checkPassword(password))) {
       return res.status(401).json({ error: "Password does not match." });
     }
-    const { id, name } = employee;
+    const { id, name } = user;
     const rep = {
-      employee: {
+      user: {
         id,
         name,
         email,
