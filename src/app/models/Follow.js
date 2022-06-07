@@ -14,12 +14,12 @@ class Follow extends Model {
     return this;
   }
 
-  //   static associate(models) {
-  //     this.belongsTo(models.User, {
-  //       foreignKey: "owner_id",
-  //       as: "owner",
-  //     });
-  //   }
+  static associate(models) {
+    this.hasOne(models.Profile, {
+      foreignKey: "id",
+      as: "follow",
+    });
+  }
 }
 
 module.exports = Follow;

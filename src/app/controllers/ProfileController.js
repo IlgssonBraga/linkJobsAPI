@@ -28,6 +28,8 @@ class ProfileController {
       owner_id: req.userId,
       following: 0,
       followers: 0,
+      qt_rates: 0,
+      avg_rate: 0,
     });
     const newProfile = await Profile.findOne({
       where: { owner_id: req.userId },

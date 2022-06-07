@@ -23,11 +23,14 @@ routes.get("/users", userController.index);
 routes.get("/users/:id", userController.show);
 routes.put("/users/:id", userController.update);
 routes.delete("/users/:id", userController.delete);
-routes.get("/follows/:id", followController.show);
+routes.get("/followers/:id", followController.followers);
+routes.get("/following/:id", followController.following);
 routes.post("/follows/:id", followController.store);
 routes.delete("/follows/:id", followController.delete);
 routes.get("/avaliations/:id", avaliationController.show);
 routes.post("/avaliations/:id", avaliationController.store);
+routes.put("/avaliations/:id", avaliationController.update);
+routes.delete("/avaliations/:id", avaliationController.delete);
 module.exports = {
   routes,
 };

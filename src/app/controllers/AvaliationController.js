@@ -61,33 +61,78 @@ class AvaliationController {
     if (!profile) {
       return res.status(404).json({ message: "Profile not found" });
     }
-    const followedByProfile = await Profile.findOne({
-      where: { owner_id: req.userId },
+    const findAva = await Avaliation.findOne({
+      where: { rated_by: req.userId, rated: id },
     });
-    if (!followedByProfile) {
-      return res.status(404).json({ message: "You don't follow this profile" });
+    if (!findAva) {
+      return res
+        .status(404)
+        .json({ message: "You don't avaliate this profile" });
     }
 
-    const findFollow = await Follow.findOne({
-      where: { followed_by: followedByProfile.id, following: id },
-    });
-
-    if (!findFollow) {
-      return res.status(404).json({ message: "You don't follow this profile" });
-    }
-
-    console.log("findFollow", findFollow);
-
-    findFollow.destroy();
-
-    await followedByProfile.update({
-      following: followedByProfile.following - 1,
-    });
+    findAva.destroy();
 
     await profile.update({
-      followers: profile.followers - 1,
+      qt_rates: profile.qt_rates - 1,
+      avg_rate:
+        (profile.avg_rate * profile.qt_rates - findAva.rate) /
+        (profile.qt_rates - 1 == 0 ? 1 : profile.qt_rates - 1),
     });
+
     return res.status(204).json();
+  }
+
+  async update(req, res) {
+    const id = req.params.id; // id do profile
+    let profile = await Profile.findByPk(id);
+    if (!profile) {
+      return res.status(404).json({ message: "Profile not found" });
+    }
+    const findAva = await Avaliation.findOne({
+      where: { rated_by: req.userId, rated: id },
+    });
+    if (!findAva) {
+      return res
+        .status(404)
+        .json({ message: "You don't avaliate this profile" });
+    }
+
+    await profile.update({
+      qt_rates: profile.qt_rates - 1,
+      avg_rate:
+        (profile.avg_rate * profile.qt_rates - findAva.rate) /
+        (profile.qt_rates - 1 == 0 ? 1 : profile.qt_rates - 1),
+    });
+
+    await findAva.update({
+      rate: req.body.rate,
+    });
+
+    // findAva = await Avaliation.findOne({
+    //   where: { rated_by: req.userId, rated: id },
+    // });
+
+    // console.log("findAva.rate", findAva.rate);
+
+    // await profile.update({
+    //   qt_rates: profile.qt_rates - 1,
+    //   avg_rate:
+    //     (profile.avg_rate * profile.qt_rates - findAva.rate) /
+    //     (profile.qt_rates - 1 == 0 ? 1 : profile.qt_rates - 1),
+    // });
+
+    profile = await Profile.findByPk(id);
+
+    await profile.update({
+      qt_rates: profile.qt_rates + 1,
+      avg_rate:
+        (profile.avg_rate * profile.qt_rates + req.body.rate) /
+        (profile.qt_rates + 1),
+    });
+
+    profile = await Profile.findByPk(id);
+
+    return res.json(profile);
   }
 }
 

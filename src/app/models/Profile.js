@@ -23,6 +23,20 @@ class Profile extends Model {
       as: "owner",
     });
   }
+
+  static associate(models) {
+    this.hasMany(models.Follow, {
+      foreignKey: "followed_by",
+      as: "follow",
+    });
+  }
+
+  static associate(models) {
+    this.hasMany(models.Avaliation, {
+      foreignKey: "rated_by",
+      as: "avaliaton",
+    });
+  }
 }
 
 module.exports = Profile;

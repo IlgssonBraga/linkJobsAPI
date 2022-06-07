@@ -3,10 +3,21 @@ const Profile = require("../models/Profile");
 // const User = require("../models/User");
 
 class FollowController {
-  async show(req, res) {
+  async followers(req, res) {
     const id = req.params.id;
     const followList = await Follow.findAll({
       where: { following: id },
+    });
+    if (!followList) {
+      return res.status(404).json({ message: "Not found" });
+    }
+    return res.json(followList);
+  }
+
+  async following(req, res) {
+    const id = req.params.id;
+    const followList = await Follow.findAll({
+      where: { followed_by: id },
     });
     if (!followList) {
       return res.status(404).json({ message: "Not found" });
@@ -77,8 +88,6 @@ class FollowController {
     if (!findFollow) {
       return res.status(404).json({ message: "You don't follow this profile" });
     }
-
-    console.log("findFollow", findFollow);
 
     findFollow.destroy();
 
